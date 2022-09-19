@@ -1,4 +1,9 @@
-﻿namespace AccountOwnerServer.Extensions
+﻿using LoggerService;
+using Contracts;
+using Entities;
+using Microsoft.EntityFrameworkCore;
+
+namespace AccountOwnerServer.Extensions
 {
     public static class ServiceExtensions
     {
@@ -25,6 +30,19 @@
             {
 
             });
+        }
+        public static void ConfigureLoggerService(this IServiceCollection services)
+        {
+            services.AddSingleton<ILoggerManager, LoggerManager>();
+        }
+        public static void ConfigureMySqlContext(this IServiceCollection services,
+            IConfiguration configuration)
+        {
+            var connectionString = configuration["mysqlconnection:connectionString"];
+
+            services.AddDbContext<RepositoryContext>(options =>
+            options.UseMySql(connectionString,
+                MySqlServerVersion.LatestSupportedServerVersion));
         }
     }
 }
