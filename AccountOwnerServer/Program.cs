@@ -1,14 +1,15 @@
 using AccountOwnerServer.Extensions;
-using LoggerService;
 using NLog;
 
 var builder = WebApplication.CreateBuilder(args);
 LogManager.LoadConfiguration(String.Concat(Directory.GetCurrentDirectory(), "//nlog.config"));
+builder.Services.AddAutoMapper(typeof(Program));
 // Add services to the container.
 builder.Services.ConfigureCors();
 builder.Services.ConfigureIISIntegration();
 builder.Services.AddControllers();
 builder.Services.ConfigureLoggerService();
+builder.Services.ConfigureRepositoryWrapper();
 
 var app = builder.Build();
 
