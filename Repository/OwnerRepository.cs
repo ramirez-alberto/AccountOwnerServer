@@ -14,5 +14,10 @@ namespace Repository
             await FindAll()
             .OrderBy(ow => ow.Name)
             .ToListAsync();
+        public async Task<Owner?> GetOwnerByIdAsync(Guid id) =>
+            await FindByCondition(ow => ow.Id.Equals(id)).FirstOrDefaultAsync();
+
+        public void CreateOwner(Owner owner) =>
+            Create(owner);
     }
 }
