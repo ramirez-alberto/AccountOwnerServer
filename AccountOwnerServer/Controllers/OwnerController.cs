@@ -23,11 +23,11 @@ namespace AccountOwnerServer.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllOwners()
+        public async Task<IActionResult> GetAllOwners()
         {
             try
             {
-                var owners = _repository.Owner.GetAllOwners();
+                var owners = await _repository.Owner.GetAllOwnersAsync();
                 _logger.LogInfo($"Returned all owners from database.");
                 var ownersResult = _mapper.Map<IEnumerable<OwnerDto>>(owners);
                 return Ok(owners);

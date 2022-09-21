@@ -10,6 +10,6 @@ namespace Contracts
     {
         IAccountRepository Account { get; }
         IOwnerRepository Owner { get; }
-        void Save();
+        Task SaveAsync();
     }
 }

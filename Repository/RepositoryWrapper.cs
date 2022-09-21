@@ -24,6 +24,6 @@ namespace Repository
         public RepositoryWrapper(RepositoryContext repositoryContext) =>
             _repositoryContext = repositoryContext;
 
-        public void Save() => _repositoryContext.SaveChanges();
+        public async Task SaveAsync() => await _repositoryContext.SaveChangesAsync();
     }
 }

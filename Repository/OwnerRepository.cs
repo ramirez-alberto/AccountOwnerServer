@@ -1,6 +1,7 @@
 ﻿using Entities;
 using Entities.Models;
 using Contracts;
+using Microsoft.EntityFrameworkCore;
 
 namespace Repository
 {
@@ -9,9 +10,9 @@ namespace Repository
         public OwnerRepository(RepositoryContext repositoryContext)
             : base(repositoryContext) { }
 
-        public IEnumerable<Owner> GetAllOwners() => 
-            FindAll()
+        public async Task<IEnumerable<Owner>> GetAllOwnersAsync() => 
+            await FindAll()
             .OrderBy(ow => ow.Name)
-            .ToList();
+            .ToListAsync();
     }
 }

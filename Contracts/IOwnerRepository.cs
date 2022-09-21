@@ -3,6 +3,6 @@ namespace Contracts
 {
     public interface IOwnerRepository
     {
-        IEnumerable<Owner> GetAllOwners();
+        Task<IEnumerable<Owner>> GetAllOwnersAsync();
     }
 }
