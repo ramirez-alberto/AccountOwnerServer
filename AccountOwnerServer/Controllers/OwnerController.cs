@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 using Contracts;
 using AutoMapper;
 using Entities.DataTransferObjects;
@@ -45,15 +46,26 @@ namespace AccountOwnerServer.Controllers
         {
             try
             {
-            var owners = await _repository.Owner.GetOwnersAsync(ownerParameters);
-                    _logger.LogInfo($"Returned all owners from database.");
-                    var ownersResult = _mapper.Map<IEnumerable<OwnerDto>>(owners);
-                    return Ok(ownersResult);
+                var owners = await _repository.Owner.GetOwnersAsync(ownerParameters);
+                var metadata = new
+                {
+                    owners.TotalCount,
+                    owners.PageSize,
+                    owners.CurrentPage,
+                    owners.TotalPages,
+                    owners.HasNext,
+                    owners.HasPrevious
+                };
+
+                _logger.LogInfo($"Returned all owners from database.");
+                Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(metadata));
+                var ownersResult = _mapper.Map<IEnumerable<OwnerDto>>(owners);
+                return Ok(ownersResult);
             }
             catch (Exception ex)
             {
-                        _logger.LogError($"There was an error in GetAllOwner action: {ex.Message}");
-                        return StatusCode(500, "Internal server error.");
+                _logger.LogError($"There was an error in GetAllOwner action: {ex.Message}");
+                return StatusCode(500, "Internal server error.");
             }
         }
 
