@@ -44,6 +44,8 @@ namespace AccountOwnerServer.Controllers
         [HttpGet]
         public async Task<IActionResult> GetOwners(OwnerParameters ownerParameters)
         {
+            if(!ownerParameters.isValidDate())
+                return BadRequest("Max year of birth cannot be less than min year of birth");
             try
             {
                 var owners = await _repository.Owner.GetOwnersAsync(ownerParameters);

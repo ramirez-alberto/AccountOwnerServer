@@ -17,7 +17,10 @@ namespace Repository
             .ToListAsync();
 
         public async Task<PagedList<Owner>> GetOwnersAsync(OwnerParameters ownerParameters) =>
-            await PagedList<Owner>.ToPagedListAsync(FindAll().OrderBy(ow => ow.Name)
+            await PagedList<Owner>.ToPagedListAsync(
+                FindByCondition(o => o.DateOfBirth.Year >= ownerParameters.MinYearOfBirth &&
+                    o.DateOfBirth.Year <= ownerParameters.MaxYearOfBirth)
+                .OrderBy(ow => ow.Name)
                 ,ownerParameters.PageNumber
                 ,ownerParameters.PageSize);
 
