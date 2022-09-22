@@ -14,6 +14,14 @@ namespace Repository
             await FindAll()
             .OrderBy(ow => ow.Name)
             .ToListAsync();
+
+        public async Task<IEnumerable<Owner>> GetOwnersAsync(OwnerParameters ownerParameters) =>
+            await FindAll()
+            .OrderBy(ow => ow.Name)
+            .Skip((ownerParameters.PageCount - 1 ) * ownerParameters.PageSize)
+            .Take(ownerParameters.PageSize)
+            .ToListAsync();
+
         public async Task<Owner?> GetOwnerByIdAsync(Guid id) =>
             await FindByCondition(ow => ow.Id.Equals(id)).FirstOrDefaultAsync();
 

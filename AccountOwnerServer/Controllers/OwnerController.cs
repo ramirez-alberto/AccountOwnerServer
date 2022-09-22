@@ -23,20 +23,37 @@ namespace AccountOwnerServer.Controllers
             _mapper = mapper;
         }
 
+        //[HttpGet]
+        //public async Task<IActionResult> GetAllOwners()
+        //{
+        //    try
+        //    {
+        //        var owners = await _repository.Owner.GetAllOwnersAsync();
+        //        _logger.LogInfo($"Returned all owners from database.");
+        //        var ownersResult = _mapper.Map<IEnumerable<OwnerDto>>(owners);
+        //        return Ok(owners);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError($"There was an error in GetAllOwner action: {ex.Message}");
+        //        return StatusCode(500, "Internal server error.");
+        //    }
+        //}
+
         [HttpGet]
-        public async Task<IActionResult> GetAllOwners()
+        public async Task<IActionResult> GetOwners(OwnerParameters ownerParameters)
         {
             try
             {
-                var owners = await _repository.Owner.GetAllOwnersAsync();
-                _logger.LogInfo($"Returned all owners from database.");
-                var ownersResult = _mapper.Map<IEnumerable<OwnerDto>>(owners);
-                return Ok(owners);
+            var owners = await _repository.Owner.GetOwnersAsync(ownerParameters);
+                    _logger.LogInfo($"Returned all owners from database.");
+                    var ownersResult = _mapper.Map<IEnumerable<OwnerDto>>(owners);
+                    return Ok(ownersResult);
             }
             catch (Exception ex)
             {
-                _logger.LogError($"There was an error in GetAllOwner action: {ex.Message}");
-                return StatusCode(500, "Internal server error.");
+                        _logger.LogError($"There was an error in GetAllOwner action: {ex.Message}");
+                        return StatusCode(500, "Internal server error.");
             }
         }
 
