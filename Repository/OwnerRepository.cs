@@ -18,7 +18,7 @@ namespace Repository
 
         public async Task<PagedList<Owner>> GetOwnersAsync(OwnerParameters ownerParameters) =>
             await PagedList<Owner>.ToPagedListAsync(FindAll().OrderBy(ow => ow.Name)
-                ,ownerParameters.PageCount
+                ,ownerParameters.PageNumber
                 ,ownerParameters.PageSize);
 
         public async Task<Owner?> GetOwnerByIdAsync(Guid id) =>
