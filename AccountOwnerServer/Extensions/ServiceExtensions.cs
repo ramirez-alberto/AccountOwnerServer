@@ -1,8 +1,10 @@
 ﻿using LoggerService;
 using Contracts;
 using Entities;
+using Entities.Models;
 using Microsoft.EntityFrameworkCore;
 using Repository;
+using Entities.Helpers;
 
 namespace AccountOwnerServer.Extensions
 {
@@ -48,6 +50,7 @@ namespace AccountOwnerServer.Extensions
         public static void ConfigureRepositoryWrapper(this IServiceCollection services)
         {
             services.AddScoped<IRepositoryWrapper,RepositoryWrapper>();
+            services.AddScoped<ISortHelper<Owner>,SortHelper<Owner>>();
         }
     }
 }
