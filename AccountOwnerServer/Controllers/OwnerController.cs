@@ -42,7 +42,7 @@ namespace AccountOwnerServer.Controllers
         //}
 
         [HttpGet]
-        public async Task<IActionResult> GetOwners(OwnerParameters ownerParameters)
+        public async Task<IActionResult> GetOwners([FromQuery] OwnerParameters ownerParameters)
         {
             if(!ownerParameters.isValidDate())
                 return BadRequest("Max year of birth cannot be less than min year of birth");

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities.Models
 {
-    [Table("owner")]
+    [Table("Owner")]
     public class Owner
     {
         [Column("OwnerId")]

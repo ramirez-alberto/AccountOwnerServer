@@ -26,7 +26,7 @@ namespace Entities.Helpers
                     continue;
 
                 var propertyFromQueryName = param.Split(" ")[0];
-                var objectProperty = propertyInfos.FirstOrDefault(x => x.Name.Equals(propertyFromQueryName));
+                var objectProperty = propertyInfos.FirstOrDefault(x => x.Name.Equals(propertyFromQueryName, StringComparison.InvariantCultureIgnoreCase));
                 if (objectProperty == null)
                     continue;
                 var sortingOrder = param.EndsWith(" desc") ? "descending" : "ascending";
