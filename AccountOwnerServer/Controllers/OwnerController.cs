@@ -86,6 +86,29 @@ namespace AccountOwnerServer.Controllers
             return Ok(ownerResult);
         }
 
+        [HttpGet("{id}/account")]
+        public async Task<IActionResult> GetOwnerWithDetails(Guid id)
+        {
+            try
+            {
+                var owner = await _repository.Owner.GetOwnerWithDetailsAsync(id);
+                if (owner == null)
+                {
+                    _logger.LogError($"Cannot find owner with id: {id}");
+                    return NotFound();
+                }
+
+                var ownerResult = _mapper.Map<OwnerDto>(owner);
+
+                return Ok(ownerResult);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"There was an error in GetOwnerWithDetails action: {ex.Message}");
+                return StatusCode(500, "Internal server error.");
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateOwner([FromBody] OwnerForCreateDto owner)
         {

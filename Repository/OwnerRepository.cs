@@ -38,7 +38,11 @@ namespace Repository
         }
         public async Task<Owner?> GetOwnerByIdAsync(Guid id) =>
             await FindByCondition(ow => ow.Id.Equals(id)).FirstOrDefaultAsync();
-
+        
+        public async Task<Owner?> GetOwnerWithDetailsAsync(Guid id) =>
+            await FindByCondition(ow => ow.Id.Equals(id))
+            .Include(o => o.Accounts)
+            .FirstOrDefaultAsync();
         public void CreateOwner(Owner owner) =>
             Create(owner);
     }

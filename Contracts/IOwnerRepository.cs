@@ -9,6 +9,7 @@ namespace Contracts
         //Task<IEnumerable<Owner>> GetOwnersAsync(OwnerParameters ownerParameters);
         Task<PagedList<Owner>> GetOwnersAsync(OwnerParameters ownerParameters);
         Task<Owner?> GetOwnerByIdAsync(Guid id);  
+        Task<Owner?> GetOwnerWithDetailsAsync(Guid id);
         void CreateOwner(Owner owner);
     }
 }
