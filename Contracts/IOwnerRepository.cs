@@ -11,5 +11,7 @@ namespace Contracts
         Task<Owner?> GetOwnerByIdAsync(Guid id);  
         Task<Owner?> GetOwnerWithDetailsAsync(Guid id);
         void CreateOwner(Owner owner);
+        void UpdateOwner(Owner owner);
+        void DeleteOwner(Owner owner);
     }
 }

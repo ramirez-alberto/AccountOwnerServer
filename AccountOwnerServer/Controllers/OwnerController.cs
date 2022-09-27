@@ -44,7 +44,7 @@ namespace AccountOwnerServer.Controllers
         [HttpGet]
         public async Task<IActionResult> GetOwners([FromQuery] OwnerParameters ownerParameters)
         {
-            if(!ownerParameters.isValidDate())
+            if (!ownerParameters.isValidDate())
                 return BadRequest("Max year of birth cannot be less than min year of birth");
             try
             {
@@ -137,6 +137,43 @@ namespace AccountOwnerServer.Controllers
             catch (Exception ex)
             {
 
+                _logger.LogError($"There was an error in GetAllOwner action: {ex.Message}");
+                return StatusCode(500, "Internal server error.");
+            }
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateOwner([FromBody] OwnerForUpdateDto owner,Guid id)
+        {
+            try
+            {
+                if (owner == null)
+                {
+                    _logger.LogError("Owner object sent by the client is null.");
+                    return BadRequest("Owner model is null.");
+                }
+                if (!ModelState.IsValid)
+                {
+                    _logger.LogError("Owner model sent by client is invalid");
+                    return BadRequest("Invalid model Owner.");
+                }
+
+                var ownerEntity = await _repository.Owner.GetOwnerByIdAsync(id);
+                if(ownerEntity == null)
+                {
+                    _logger.LogError($"Cannot find owner with id: {id}");
+                    return NotFound();
+                }
+
+                _mapper.Map(owner, ownerEntity);
+                _repository.Owner.UpdateOwner(ownerEntity);
+                await _repository.SaveAsync();
+
+                return NoContent();
+
+            }
+            catch (Exception ex)
+            {
                 _logger.LogError($"There was an error in GetAllOwner action: {ex.Message}");
                 return StatusCode(500, "Internal server error.");
             }
