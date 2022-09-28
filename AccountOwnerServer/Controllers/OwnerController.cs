@@ -178,5 +178,35 @@ namespace AccountOwnerServer.Controllers
                 return StatusCode(500, "Internal server error.");
             }
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteOwner(Guid id)
+        {
+            try
+            {
+                var ownerEntity = await _repository.Owner.GetOwnerByIdAsync(id);
+                if (ownerEntity == null)
+                {
+                    _logger.LogError($"Cannot find owner with id: {id}");
+                    return NotFound();
+                }
+                if (_repository.Account.AccountsByOwner(id).Any())
+                {
+                    _logger.LogError($"Cannot delete owner with id: {id}. It has related accounts. Delete those accounts first");
+                    return BadRequest("Cannot delete owner. It has related accounts. Delete those accounts first");
+                }
+
+                _repository.Owner.DeleteOwner(ownerEntity);
+                await _repository.SaveAsync();
+
+                return NoContent();
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"There was an error in GetAllOwner action: {ex.Message}");
+                return StatusCode(500, "Internal server error.");
+            }
+        }
     }
 }
